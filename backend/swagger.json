@@ -15,10 +15,6 @@
     {
       "name": "auth",
       "description": "Operations about auth"
-    },
-    {
-      "name": "user",
-      "description": "Operations about user"
     }
   ],
   "schemes": [
@@ -62,7 +58,7 @@
           "200": {
             "description": "successful operation",
             "schema": {
-              "$ref": "#/definitions/Jog"
+              "$ref": "#/definitions/Jogs"
             }
           },
           "400": {
@@ -74,7 +70,12 @@
           "405": {
             "description": "Validation exception"
           }
-        }
+        },
+        "security": [
+          {
+            "access_token": []
+          }
+        ]
       },
       "post": {
         "tags": [
@@ -110,7 +111,12 @@
           "405": {
             "description": "Invalid input"
           }
-        }
+        },
+        "security": [
+          {
+            "access_token": []
+          }
+        ]
       },
       "put": {
         "tags": [
@@ -152,7 +158,12 @@
           "405": {
             "description": "Validation exception"
           }
-        }
+        },
+        "security": [
+          {
+            "access_token": []
+          }
+        ]
       }
     },
     "/jog/statistic": {
@@ -200,7 +211,12 @@
           "405": {
             "description": "Validation exception"
           }
-        }
+        },
+        "security": [
+          {
+            "access_token": []
+          }
+        ]
       }
     },
     "/jog/{jogId}": {
@@ -243,7 +259,12 @@
           "405": {
             "description": "Validation exception"
           }
-        }
+        },
+        "security": [
+          {
+            "access_token": []
+          }
+        ]
       },
       "delete": {
         "tags": [
@@ -281,7 +302,12 @@
           "405": {
             "description": "Validation exception"
           }
-        }
+        },
+        "security": [
+          {
+            "access_token": []
+          }
+        ]
       }
     },
     "/auth/register": {
@@ -307,8 +333,11 @@
           }
         ],
         "responses": {
-          "default": {
-            "description": "successful operation"
+          "201": {
+            "description": "successful created"
+          },
+          "422": {
+            "description": "user already exist"
           }
         }
       }
@@ -342,15 +371,10 @@
               "type": "string"
             },
             "headers": {
-              "X-Rate-Limit": {
-                "type": "integer",
-                "format": "int32",
-                "description": "calls per hour allowed by the user"
-              },
-              "X-Expires-After": {
+              "Authorization": {
                 "type": "string",
-                "format": "date-time",
-                "description": "date in UTC when token expires"
+                "format": "int32",
+                "description": "access_token"
               }
             }
           },
@@ -362,22 +386,19 @@
     }
   },
   "securityDefinitions": {
-    "petstore_auth": {
-      "type": "oauth2",
-      "authorizationUrl": "http://petstore.swagger.io/oauth/dialog",
-      "flow": "implicit",
-      "scopes": {
-        "write:pets": "modify pets in your account",
-        "read:pets": "read your pets"
-      }
-    },
-    "api_key": {
+    "access_token": {
       "type": "apiKey",
-      "name": "api_key",
+      "name": "Authorization",
       "in": "header"
     }
   },
   "definitions": {
+    "Jogs": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Jog"
+      }
+    },
     "Jog": {
       "type": "object",
       "properties": {
