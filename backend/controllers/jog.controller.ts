@@ -1,10 +1,10 @@
 import {Router} from 'express';
+import getUsernameFromResponse from '../helpers/getUsernameFromResponce';
 
 const router = Router();
 
-const username = 'user1';
-
 router.post('/', async (req, res) => {
+    const username = getUsernameFromResponse(res);
     const {date, distance, time} = req.body;
     res.json({date, distance, time, id: "3fa85f64-5717-4562-b3fc-2c963f66afa6"});
 });
