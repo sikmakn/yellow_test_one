@@ -1,8 +1,6 @@
-import dotenv from 'dotenv';
-dotenv.config();
-
+import 'dotenv/config';
 import express, {Request, Response, NextFunction} from 'express';
-import saggerUi from 'swagger-ui-express';
+import swaggerUi from 'swagger-ui-express';
 import swaggerOptions from './swagger.json';
 import cors from 'cors';
 import bodyParser from 'body-parser';
@@ -22,7 +20,7 @@ async function start() {
 
     const app = express();
 
-    app.use('/api', saggerUi.serve, saggerUi.setup(swaggerOptions));
+    app.use('/api', swaggerUi.serve, swaggerUi.setup(swaggerOptions));
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({extended: true}));
     app.use(cors({
@@ -42,7 +40,6 @@ async function start() {
             return res.sendStatus(400);
         res.sendStatus(err.status || 500);
     });
-
     app.listen(process.env.PORT || 3002);
 }
 
