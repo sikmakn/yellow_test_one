@@ -576,12 +576,14 @@
         "distance": {
           "type": "integer",
           "format": "int64",
-          "minimum": 1
+          "minimum": 1,
+          "description": "distance in meters"
         },
         "time": {
           "type": "integer",
           "format": "int64",
-          "minimum": 1
+          "minimum": 1,
+          "description": "time in second"
         }
       },
       "xml": {
@@ -598,12 +600,14 @@
         "distance": {
           "type": "integer",
           "format": "int64",
-          "minimum": 1
+          "minimum": 1,
+          "description": "distance in meters"
         },
         "time": {
           "type": "integer",
           "format": "int64",
-          "minimum": 1
+          "minimum": 1,
+          "description": "time in second"
         }
       },
       "xml": {
@@ -620,12 +624,14 @@
         "distance": {
           "type": "integer",
           "format": "int64",
-          "minimum": 1
+          "minimum": 1,
+          "description": "distance in meters"
         },
         "time": {
           "type": "integer",
           "format": "int64",
-          "minimum": 1
+          "minimum": 1,
+          "description": "time in second"
         }
       },
       "xml": {
@@ -642,12 +648,14 @@
         "distance": {
           "type": "integer",
           "format": "int64",
-          "minimum": 1
+          "minimum": 1,
+          "description": "distance in meters"
         },
         "time": {
           "type": "integer",
           "format": "int64",
-          "minimum": 1
+          "minimum": 1,
+          "description": "time in second"
         }
       },
       "xml": {

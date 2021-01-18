@@ -1,6 +1,7 @@
 import {Router} from 'express';
 import multer from 'multer';
 import * as fileService from '../services/file.service';
+import objectIdSchema from '../validateSchemas/objectId.validateSchema';
 
 const upload = multer({storage: multer.memoryStorage()});
 
@@ -19,8 +20,11 @@ router.get('/', async (req, res) => {
 
 router.get('/:fileId', async (req, res) => {
     const {fileId} = req.params;
-    if (!await fileService.isFileExist(fileId))
+    if (objectIdSchema.validate(fileId).error)
         return res.sendStatus(400);
+    if (!await fileService.isFileExist(fileId))
+        return res.sendStatus(404);
+
     await fileService.findFile(fileId, res);
 });
 

@@ -2,10 +2,14 @@ import {Router} from 'express';
 import * as userService from '../services/user.service';
 import * as authService from '../services/auth.service';
 import {setTokens} from '../helpers/tokens';
+import userValidateSchema from '../validateSchemas/user.validateSchema';
 
 const router = Router();
 
 router.post('/register', async (req, res) => {
+    if (userValidateSchema.validate(req.body).error)
+        return res.sendStatus(400);
+
     const {username, password} = req.body;
 
     if (await userService.isExist(username))
@@ -16,6 +20,9 @@ router.post('/register', async (req, res) => {
 });
 
 router.post('/login', async (req, res) => {
+    if (userValidateSchema.validate(req.body).error)
+        return res.sendStatus(400);
+
     const {username, password} = req.body;
 
     if (!await userService.validate(username, password))
