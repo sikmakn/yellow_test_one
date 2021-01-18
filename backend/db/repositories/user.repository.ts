@@ -1,4 +1,4 @@
-import User from '../db/models/user';
+import User from '../models/user';
 
 export async function isExist(username: string) {
     return !!await User.findOne({username});

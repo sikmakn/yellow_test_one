@@ -1,4 +1,4 @@
-import Jog from '../db/models/jog';
+import Jog from '../models/jog';
 
 export async function create(jog: JogCreate) {
     const newJog = new Jog(jog);

@@ -23,12 +23,10 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/statistic', async (req, res) => {
-    console.log(req.query);
     const {from, to} = req.query;
     let fromDate = new Date(from as string);
     let toDate = new Date(to as string);
     const jogsStatistic = await jogService.getStatistic(fromDate, toDate);
-    console.log(jogsStatistic)
     res.json(jogsStatistic);
 });
 

@@ -1,4 +1,4 @@
-import * as jogRepository from '../repositories/jog.repository';
+import * as jogRepository from '../db/repositories/jog.repository';
 
 export async function create(jog: JogCreate) {
     return jogRepository.create(jog);

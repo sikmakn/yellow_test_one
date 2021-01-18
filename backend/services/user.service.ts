@@ -1,4 +1,4 @@
-import * as userRepository from '../repositories/user.repository';
+import * as userRepository from '../db/repositories/user.repository';
 import crypto from 'crypto';
 import argon2 from 'argon2';
 

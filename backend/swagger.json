@@ -15,6 +15,10 @@
     {
       "name": "auth",
       "description": "Operations about auth"
+    },
+    {
+      "name": "file",
+      "description": "Operations with files"
     }
   ],
   "schemes": [
@@ -247,7 +251,7 @@
           {
             "name": "jogId",
             "in": "path",
-            "description": "ID of jog to delete",
+            "description": "ID of jog",
             "required": true,
             "type": "string"
           },
@@ -410,6 +414,122 @@
           }
         }
       }
+    },
+    "/file": {
+      "post": {
+        "tags": [
+          "file"
+        ],
+        "summary": "Add a new file",
+        "description": "",
+        "operationId": "addFile",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "formData",
+            "name": "file",
+            "description": "File to save",
+            "required": true,
+            "type": "file"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "successful operation",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "401": {
+            "description": "Not authenticated"
+          },
+          "405": {
+            "description": "Invalid input"
+          }
+        },
+        "security": [
+          {
+            "access_token": []
+          }
+        ]
+      },
+      "get": {
+        "tags": [
+          "file"
+        ],
+        "summary": "Get all files ids",
+        "description": "",
+        "operationId": "getFiles",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Files"
+            }
+          }
+        },
+        "security": [
+          {
+            "access_token": []
+          }
+        ]
+      }
+    },
+    "/file/{fileId}": {
+      "get": {
+        "tags": [
+          "file"
+        ],
+        "summary": "Get file by id",
+        "description": "",
+        "operationId": "getFile",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "fileId",
+            "in": "path",
+            "description": "ID of file",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Jogs"
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "401": {
+            "description": "Not authenticated"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        },
+        "security": [
+          {
+            "access_token": []
+          }
+        ]
+      }
     }
   },
   "securityDefinitions": {
@@ -420,6 +540,23 @@
     }
   },
   "definitions": {
+    "Files": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/File"
+      }
+    },
+    "File": {
+      "type": "object",
+      "properties": {
+        "_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
     "Jogs": {
       "type": "array",
       "items": {
