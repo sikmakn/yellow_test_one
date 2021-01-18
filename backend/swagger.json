@@ -120,59 +120,6 @@
             "access_token": []
           }
         ]
-      },
-      "put": {
-        "tags": [
-          "jog"
-        ],
-        "summary": "Update an existing jog",
-        "description": "",
-        "operationId": "updateJog",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "in": "body",
-            "name": "body",
-            "description": "Jog object that needs to be added to the history",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/UpdateJog"
-            }
-          }
-        ],
-        "responses": {
-          "201": {
-            "description": "successful operation",
-            "schema": {
-              "$ref": "#/definitions/Jog"
-            }
-          },
-          "400": {
-            "description": "Invalid ID supplied"
-          },
-          "401": {
-            "description": "Not authenticated"
-          },
-          "403": {
-            "description": "You are not the author"
-          },
-          "404": {
-            "description": "Jog not found"
-          },
-          "405": {
-            "description": "Validation exception"
-          }
-        },
-        "security": [
-          {
-            "access_token": []
-          }
-        ]
       }
     },
     "/jog/statistic": {
@@ -196,7 +143,7 @@
             "type": "string",
             "format": "date",
             "description": "The start date of jogs",
-            "required": false
+            "required": true
           },
           {
             "in": "query",
@@ -204,7 +151,7 @@
             "type": "string",
             "format": "date",
             "description": "The end date of jogs",
-            "required": false
+            "required": true
           }
         ],
         "responses": {
@@ -236,7 +183,7 @@
         "tags": [
           "jog"
         ],
-        "summary": "Delete an existing jog",
+        "summary": "Get jog by id",
         "description": "",
         "operationId": "getJog",
         "consumes": [
@@ -251,12 +198,71 @@
             "in": "path",
             "description": "ID of jog to delete",
             "required": true,
-            "type": "string",
-            "format": "uuid"
+            "type": "string"
           }
         ],
         "responses": {
           "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Jog"
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "401": {
+            "description": "Not authenticated"
+          },
+          "403": {
+            "description": "You are not the author"
+          },
+          "404": {
+            "description": "Jog not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        },
+        "security": [
+          {
+            "access_token": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "jog"
+        ],
+        "summary": "Update an existing jog",
+        "description": "",
+        "operationId": "updateJog",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "jogId",
+            "in": "path",
+            "description": "ID of jog to delete",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Jog object that needs to update",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UpdateJog"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
             "description": "successful operation",
             "schema": {
               "$ref": "#/definitions/Jog"
@@ -322,9 +328,6 @@
           },
           "404": {
             "description": "Jog not found"
-          },
-          "405": {
-            "description": "Validation exception"
           }
         },
         "security": [
@@ -426,9 +429,8 @@
     "Jog": {
       "type": "object",
       "properties": {
-        "id": {
-          "type": "string",
-          "format": "uuid"
+        "_id": {
+          "type": "string"
         },
         "date": {
           "type": "string",
@@ -452,10 +454,6 @@
     "UpdateJog": {
       "type": "object",
       "properties": {
-        "id": {
-          "type": "string",
-          "format": "uuid"
-        },
         "date": {
           "type": "string",
           "format": "date"

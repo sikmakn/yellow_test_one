@@ -1,41 +1,66 @@
 import {Router} from 'express';
+import * as jogService from '../services/jog.service';
 import getUsernameFromResponse from '../helpers/getUsernameFromResponce';
 
 const router = Router();
 
 router.post('/', async (req, res) => {
-    const username = getUsernameFromResponse(res);
+    const username = getUsernameFromResponse(res)!;
     const {date, distance, time} = req.body;
-    res.json({date, distance, time, id: "3fa85f64-5717-4562-b3fc-2c963f66afa6"});
+    const jog = await jogService.create({username, date, distance, time});
+    res.json(jog);
 });
 
-router.get('/', async(req, res)=>{
+router.get('/', async (req, res) => {
+    const username = getUsernameFromResponse(res)!;
+    const {from, to} = req.query;
+    let fromDate: Date | undefined;
+    let toDate: Date | undefined;
+    if (from) fromDate = new Date(from as string);
+    if (to) toDate = new Date(to as string);
+    const jogs = await jogService.getMany(username, fromDate, toDate);
+    res.json(jogs);
+});
+
+router.get('/statistic', async (req, res) => {
     console.log(req.query);
     const {from, to} = req.query;
-    res.json([{date: Date.now(), distance: 100, id: "3fa85f64-5717-4562-b3fc-2c963f66afa6"}])
-});
-
-router.get('/statistic', async(req,res)=>{
-   console.log(req.query);
-   const {from, to} = req.query;
-   res.json({speed:3.2, distance: 5000, time: 700});
+    let fromDate = new Date(from as string);
+    let toDate = new Date(to as string);
+    const jogsStatistic = await jogService.getStatistic(fromDate, toDate);
+    console.log(jogsStatistic)
+    res.json(jogsStatistic);
 });
 
 router.get('/:jogId', async (req, res) => {
     const {jogId} = req.params;
-    console.log(jogId);
-    res.json({date: Date.now(), distance: 100, id: jogId});
+    const jog = await jogService.findById(jogId);
+    if (!jog)
+        return res.sendStatus(404);
+    res.json(jog);
 });
 
-router.put('/:jogId', async (req, res) => {
+router.post('/:jogId', async (req, res) => {
     const {jogId} = req.params;
-    console.log(jogId);
-    res.json({date: Date.now(), distance: 100, id: jogId});
+
+    if (!await jogService.findById(jogId))
+        return res.sendStatus(404);
+
+    const {date, distance, time} = req.body;
+    const updatedJog = await jogService.update(jogId, {date, distance, time});
+    res.json(updatedJog);
 });
 
 router.delete('/:jogId', async (req, res) => {
+    const username = getUsernameFromResponse(res);
     const {jogId} = req.params;
-    console.log(jogId);
+    const jog = await jogService.findById(jogId);
+    if (!jog)
+        return res.sendStatus(404);
+    if (jog.username !== username)
+        return res.sendStatus(403);
+
+    await jogService.removeById(jogId);
     res.sendStatus(200);
 });
 

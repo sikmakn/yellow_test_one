@@ -16,7 +16,8 @@ import {connect} from 'mongoose';
 async function start() {
     await connect(process.env.MONGO_URI as string, {
         useNewUrlParser: true,
-        useUnifiedTopology: true
+        useUnifiedTopology: true,
+        useFindAndModify: false,
     });
 
     const app = express();
