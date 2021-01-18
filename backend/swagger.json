@@ -1,0 +1,678 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "This is a swagger rest api description for jogs application",
+    "version": "1.0.0",
+    "title": "Jogs application"
+  },
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "jog",
+      "description": "Operations about jog"
+    },
+    {
+      "name": "auth",
+      "description": "Operations about auth"
+    },
+    {
+      "name": "file",
+      "description": "Operations with files"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/jog": {
+      "get": {
+        "tags": [
+          "jog"
+        ],
+        "summary": "Get jogs by time (all by default)",
+        "description": "",
+        "operationId": "getJogs",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "from",
+            "type": "string",
+            "format": "date",
+            "description": "The start date of jogs",
+            "required": false
+          },
+          {
+            "in": "query",
+            "name": "to",
+            "type": "string",
+            "format": "date",
+            "description": "The end date of jogs",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Jogs"
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "401": {
+            "description": "Not authenticated"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        },
+        "security": [
+          {
+            "access_token": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "jog"
+        ],
+        "summary": "Add a new jog",
+        "description": "",
+        "operationId": "addJog",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Jog object that needs to be added to history",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateJog"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Jog"
+            }
+          },
+          "401": {
+            "description": "Not authenticated"
+          },
+          "405": {
+            "description": "Invalid input"
+          }
+        },
+        "security": [
+          {
+            "access_token": []
+          }
+        ]
+      }
+    },
+    "/jog/statistic": {
+      "get": {
+        "tags": [
+          "jog"
+        ],
+        "summary": "Get jogs by time (all by default)",
+        "description": "",
+        "operationId": "getJogsStatistic",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "from",
+            "type": "string",
+            "format": "date",
+            "description": "The start date of jogs",
+            "required": true
+          },
+          {
+            "in": "query",
+            "name": "to",
+            "type": "string",
+            "format": "date",
+            "description": "The end date of jogs",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/JogStatistic"
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "401": {
+            "description": "Not authenticated"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        },
+        "security": [
+          {
+            "access_token": []
+          }
+        ]
+      }
+    },
+    "/jog/{jogId}": {
+      "get": {
+        "tags": [
+          "jog"
+        ],
+        "summary": "Get jog by id",
+        "description": "",
+        "operationId": "getJog",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "jogId",
+            "in": "path",
+            "description": "ID of jog to delete",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Jog"
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "401": {
+            "description": "Not authenticated"
+          },
+          "403": {
+            "description": "You are not the author"
+          },
+          "404": {
+            "description": "Jog not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        },
+        "security": [
+          {
+            "access_token": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "jog"
+        ],
+        "summary": "Update an existing jog",
+        "description": "",
+        "operationId": "updateJog",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "jogId",
+            "in": "path",
+            "description": "ID of jog",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Jog object that needs to update",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UpdateJog"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Jog"
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "401": {
+            "description": "Not authenticated"
+          },
+          "403": {
+            "description": "You are not the author"
+          },
+          "404": {
+            "description": "Jog not found"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        },
+        "security": [
+          {
+            "access_token": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "jog"
+        ],
+        "summary": "Delete an existing jog",
+        "description": "",
+        "operationId": "deleteJog",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "jogId",
+            "in": "path",
+            "description": "ID of jog to delete",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation"
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "401": {
+            "description": "Not authenticated"
+          },
+          "403": {
+            "description": "You are not the author"
+          },
+          "404": {
+            "description": "Jog not found"
+          }
+        },
+        "security": [
+          {
+            "access_token": []
+          }
+        ]
+      }
+    },
+    "/auth/register": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Create user",
+        "description": "This can only be done by the logged in user.",
+        "operationId": "createUser",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Created user object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "successful created"
+          },
+          "422": {
+            "description": "user already exist"
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Logs user into the system",
+        "description": "",
+        "operationId": "loginUser",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Created user object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "string"
+            },
+            "headers": {
+              "Authorization": {
+                "type": "string",
+                "format": "int32",
+                "description": "access_token"
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid username/password supplied"
+          }
+        }
+      }
+    },
+    "/file": {
+      "post": {
+        "tags": [
+          "file"
+        ],
+        "summary": "Add a new file",
+        "description": "",
+        "operationId": "addFile",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "formData",
+            "name": "file",
+            "description": "File to save",
+            "required": true,
+            "type": "file"
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "successful operation",
+            "schema": {
+              "type": "string"
+            }
+          },
+          "401": {
+            "description": "Not authenticated"
+          },
+          "405": {
+            "description": "Invalid input"
+          }
+        },
+        "security": [
+          {
+            "access_token": []
+          }
+        ]
+      },
+      "get": {
+        "tags": [
+          "file"
+        ],
+        "summary": "Get all files ids",
+        "description": "",
+        "operationId": "getFiles",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Files"
+            }
+          }
+        },
+        "security": [
+          {
+            "access_token": []
+          }
+        ]
+      }
+    },
+    "/file/{fileId}": {
+      "get": {
+        "tags": [
+          "file"
+        ],
+        "summary": "Get file by id",
+        "description": "",
+        "operationId": "getFile",
+        "consumes": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "fileId",
+            "in": "path",
+            "description": "ID of file",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/Jogs"
+            }
+          },
+          "400": {
+            "description": "Invalid ID supplied"
+          },
+          "401": {
+            "description": "Not authenticated"
+          },
+          "405": {
+            "description": "Validation exception"
+          }
+        },
+        "security": [
+          {
+            "access_token": []
+          }
+        ]
+      }
+    }
+  },
+  "securityDefinitions": {
+    "access_token": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
+    }
+  },
+  "definitions": {
+    "Files": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/File"
+      }
+    },
+    "File": {
+      "type": "object",
+      "properties": {
+        "_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "Jogs": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Jog"
+      }
+    },
+    "Jog": {
+      "type": "object",
+      "properties": {
+        "_id": {
+          "type": "string"
+        },
+        "date": {
+          "type": "string",
+          "format": "date"
+        },
+        "distance": {
+          "type": "integer",
+          "format": "int64",
+          "minimum": 1,
+          "description": "distance in meters"
+        },
+        "time": {
+          "type": "integer",
+          "format": "int64",
+          "minimum": 1,
+          "description": "time in second"
+        }
+      },
+      "xml": {
+        "name": "Jog"
+      }
+    },
+    "UpdateJog": {
+      "type": "object",
+      "properties": {
+        "date": {
+          "type": "string",
+          "format": "date"
+        },
+        "distance": {
+          "type": "integer",
+          "format": "int64",
+          "minimum": 1,
+          "description": "distance in meters"
+        },
+        "time": {
+          "type": "integer",
+          "format": "int64",
+          "minimum": 1,
+          "description": "time in second"
+        }
+      },
+      "xml": {
+        "name": "UpdateJog"
+      }
+    },
+    "CreateJog": {
+      "type": "object",
+      "properties": {
+        "date": {
+          "type": "string",
+          "format": "date"
+        },
+        "distance": {
+          "type": "integer",
+          "format": "int64",
+          "minimum": 1,
+          "description": "distance in meters"
+        },
+        "time": {
+          "type": "integer",
+          "format": "int64",
+          "minimum": 1,
+          "description": "time in second"
+        }
+      },
+      "xml": {
+        "name": "CreateJog"
+      }
+    },
+    "JogStatistic": {
+      "type": "object",
+      "properties": {
+        "speed": {
+          "type": "number",
+          "format": "double"
+        },
+        "distance": {
+          "type": "integer",
+          "format": "int64",
+          "minimum": 1,
+          "description": "distance in meters"
+        },
+        "time": {
+          "type": "integer",
+          "format": "int64",
+          "minimum": 1,
+          "description": "time in second"
+        }
+      },
+      "xml": {
+        "name": "JogStatistic"
+      }
+    },
+    "User": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      },
+      "xml": {
+        "name": "User"
+      }
+    }
+  }
+}
