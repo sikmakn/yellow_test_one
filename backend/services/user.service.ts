@@ -1,4 +1,4 @@
-import User from '../db/models/user';
+import * as userRepository from '../repositories/user.repository';
 import crypto from 'crypto';
 import argon2 from 'argon2';
 
@@ -6,14 +6,13 @@ function composePasswordString(password: string, salt: string) {
     return `${password}.${process.env.STATIC_SALT}.${salt}`;
 }
 
-export async function isExist(username: string) {
-    return !!await User.findOne({username});
+export function isExist(username: string) {
+    return userRepository.isExist(username);
 }
 
 export async function create(username: string, password: string) {
     const {hashedPassword, salt} = await createPassword(password);
-    const user = new User({password: hashedPassword, salt, username});
-    return await user.save()
+    return await userRepository.create(username, hashedPassword, salt);
 
     async function createPassword(password: string) {
         const dynamicSalt = makeRandomString();
@@ -28,8 +27,7 @@ export async function create(username: string, password: string) {
 }
 
 export async function validate(username: string, password: string) {
-    const user = await User.findOne({username});
-
+    const user = await userRepository.findByUsername(username);
     if (!user) return false;
 
     return await argon2.verify(user.password, composePasswordString(password, user.salt));
