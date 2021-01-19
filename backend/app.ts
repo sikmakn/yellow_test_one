@@ -20,7 +20,7 @@ async function start() {
 
     const app = express();
 
-    app.use('/api', swaggerUi.serve, swaggerUi.setup(swaggerOptions));
+    app.use('/', swaggerUi.serve, swaggerUi.setup(swaggerOptions));
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({extended: true}));
     app.use(cors({
