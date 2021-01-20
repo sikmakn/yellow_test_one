@@ -12,7 +12,10 @@ const JogSchema = new Schema({
     date: {type: Date, required: true},
     distance: {type: Number, required: true},
     time: {type: Number, required: true},
-})
+},{
+    toObject: {versionKey: false},
+    toJSON: {versionKey: false},
+});
 
 const Jog: Model<IJog> = model('Jog', JogSchema);
 

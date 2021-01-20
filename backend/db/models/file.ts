@@ -8,7 +8,10 @@ interface IFIle extends Document {
 const FileSchema = new Schema({
     name: {type: String, required: true},
     contentType: {type: String, required: true},
-})
+}, {
+    toObject: {versionKey: false},
+    toJSON: {versionKey: false},
+});
 
 const File: Model<IFIle> = model('File', FileSchema);
 
