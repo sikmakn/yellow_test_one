@@ -5,10 +5,11 @@ import objectIdSchema from '../validateSchemas/objectId.validateSchema';
 import jogSchema from '../validateSchemas/jog.validateSchema';
 import dateRangeRequiredSchema from '../validateSchemas/dateRangeRequired.validateSchema';
 import dateRangeSchema from '../validateSchemas/dateRange.validateSchema';
+import handleErrorAsyncMiddleware from '../helpers/handleErrorAsyncMiddleware';
 
 const router = Router();
 
-router.post('/', async (req, res) => {
+router.post('/', handleErrorAsyncMiddleware(async (req, res) => {
     const username = getUsernameFromResponse(res)!;
     if (jogSchema.validate(req.body).error)
         return res.sendStatus(400);
@@ -16,9 +17,9 @@ router.post('/', async (req, res) => {
     const {date, distance, time} = req.body;
     const jog = await jogService.create({username, date, distance, time});
     res.json(jog);
-});
+}));
 
-router.get('/', async (req, res) => {
+router.get('/', handleErrorAsyncMiddleware(async (req, res) => {
     const username = getUsernameFromResponse(res)!;
 
     if (dateRangeSchema.validate(req.query).error)
@@ -31,9 +32,9 @@ router.get('/', async (req, res) => {
     if (to) toDate = new Date(to as string);
     const jogs = await jogService.getMany(username, fromDate, toDate);
     res.json(jogs);
-});
+}));
 
-router.get('/statistic', async (req, res) => {
+router.get('/statistic', handleErrorAsyncMiddleware(async (req, res) => {
     if (dateRangeRequiredSchema.validate(req.query).error)
         return res.sendStatus(400);
     const {from, to} = req.query;
@@ -41,9 +42,9 @@ router.get('/statistic', async (req, res) => {
     let toDate = new Date(to as string);
     const jogsStatistic = await jogService.getStatistic(fromDate, toDate);
     res.json(jogsStatistic);
-});
+}));
 
-router.get('/:jogId', async (req, res) => {
+router.get('/:jogId', handleErrorAsyncMiddleware(async (req, res) => {
     const {jogId} = req.params;
     if (objectIdSchema.validate(jogId).error)
         return res.sendStatus(400);
@@ -52,9 +53,9 @@ router.get('/:jogId', async (req, res) => {
     if (!jog)
         return res.sendStatus(404);
     res.json(jog);
-});
+}));
 
-router.post('/:jogId', async (req, res) => {
+router.post('/:jogId', handleErrorAsyncMiddleware(async (req, res) => {
     const {jogId} = req.params;
     if (objectIdSchema.validate(jogId).error)
         return res.sendStatus(400);
@@ -68,9 +69,9 @@ router.post('/:jogId', async (req, res) => {
     const {date, distance, time} = req.body;
     const updatedJog = await jogService.update(jogId, {date, distance, time});
     res.json(updatedJog);
-});
+}));
 
-router.delete('/:jogId', async (req, res) => {
+router.delete('/:jogId', handleErrorAsyncMiddleware(async (req, res) => {
     const username = getUsernameFromResponse(res);
     const {jogId} = req.params;
     if (objectIdSchema.validate(jogId).error)
@@ -84,6 +85,6 @@ router.delete('/:jogId', async (req, res) => {
 
     await jogService.removeById(jogId);
     res.sendStatus(200);
-});
+}));
 
 export default router;

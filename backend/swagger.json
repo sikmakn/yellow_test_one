@@ -5,7 +5,6 @@
     "version": "1.0.0",
     "title": "Jogs application"
   },
-  "host": "localhost:3002",
   "basePath": "/",
   "tags": [
     {
@@ -22,7 +21,6 @@
     }
   ],
   "schemes": [
-    "https",
     "http"
   ],
   "paths": {

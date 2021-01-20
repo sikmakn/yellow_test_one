@@ -3,10 +3,11 @@ import * as userService from '../services/user.service';
 import * as authService from '../services/auth.service';
 import {setTokens} from '../helpers/tokens';
 import userValidateSchema from '../validateSchemas/user.validateSchema';
+import handleErrorAsyncMiddleware from '../helpers/handleErrorAsyncMiddleware';
 
 const router = Router();
 
-router.post('/register', async (req, res) => {
+router.post('/register', handleErrorAsyncMiddleware(async (req, res) => {
     if (userValidateSchema.validate(req.body).error)
         return res.sendStatus(400);
 
@@ -17,9 +18,9 @@ router.post('/register', async (req, res) => {
 
     await userService.create(username, password);
     res.sendStatus(201);
-});
+}));
 
-router.post('/login', async (req, res) => {
+router.post('/login', handleErrorAsyncMiddleware(async (req, res) => {
     if (userValidateSchema.validate(req.body).error)
         return res.sendStatus(400);
 
@@ -32,6 +33,6 @@ router.post('/login', async (req, res) => {
     setTokens({...tokens, res});
 
     res.sendStatus(200);
-});
+}));
 
 export default router;
