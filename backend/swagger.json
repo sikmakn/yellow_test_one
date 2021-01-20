@@ -264,7 +264,7 @@
           }
         ],
         "responses": {
-          "201": {
+          "200": {
             "description": "successful operation",
             "schema": {
               "$ref": "#/definitions/Jog"
@@ -437,10 +437,10 @@
           }
         ],
         "responses": {
-          "204": {
+          "200": {
             "description": "successful operation",
             "schema": {
-              "type": "string"
+              "$ref": "#/definitions/File"
             }
           },
           "401": {
@@ -552,6 +552,9 @@
         },
         "name": {
           "type": "string"
+        },
+        "contentType": {
+          "type": "string"
         }
       }
     },
@@ -570,6 +573,9 @@
         "date": {
           "type": "string",
           "format": "date"
+        },
+        "username": {
+          "type": "string"
         },
         "distance": {
           "type": "integer",
@@ -639,21 +645,23 @@
     "JogStatistic": {
       "type": "object",
       "properties": {
-        "speed": {
+        "avgSpeed": {
           "type": "number",
           "format": "double"
         },
-        "distance": {
+        "totalDistance": {
           "type": "integer",
           "format": "int64",
-          "minimum": 1,
           "description": "distance in meters"
         },
-        "time": {
+        "avgTime": {
           "type": "integer",
           "format": "int64",
-          "minimum": 1,
           "description": "time in second"
+        },
+        "week": {
+          "type": "integer",
+          "format": "int32"
         }
       },
       "xml": {

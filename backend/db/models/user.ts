@@ -10,7 +10,10 @@ const UserSchema = new Schema({
     username: {type: String, required: true},
     password: {type: String, required: true},
     salt: {type: String, required: true},
-})
+}, {
+    toObject: {versionKey: false},
+    toJSON: {versionKey: false},
+});
 
 const User: Model<IUser> = model('User', UserSchema);
 

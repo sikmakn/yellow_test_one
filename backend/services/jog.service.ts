@@ -14,15 +14,14 @@ export async function getStatistic(from: Date, to: Date) {
         const startDate = calculateStartDate(year, from);
         const endDate = calculateEndDate(year, to);
 
-        const statistic = await jogRepository.findStatistic(startDate, endDate);
+        const statisticByYear = await jogRepository.findStatistic(startDate, endDate);
         jogsStatistic
-            .push(...statistic.map(({_id, ...another}) =>
+            .push(...statisticByYear.map(({_id, ...another}) =>
                 ({...another, week: _id + yearNumber * 54})));
     }
-
-
     return recountWeeks()
         .sort((st1, st2) => st1.week - st2.week);
+
 
     function calculateStartDate(year: number, from: Date) {
         const startOfYear = new Date(year, 1, 1);
